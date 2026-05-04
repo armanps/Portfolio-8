@@ -63,7 +63,7 @@ const sections = document.querySelectorAll('section');
 window.addEventListener('scroll', () => {
     const scrollPos = window.scrollY;
     document.getElementById('pb').style.width = (scrollPos / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
-    
+
     // Show/Hide Side Nav: only visible starting from the About section
     const aboutSection = document.getElementById('about');
     if (aboutSection && scrollPos >= aboutSection.offsetTop - 200) {
@@ -73,36 +73,36 @@ window.addEventListener('scroll', () => {
     }
 
     // Update Side Nav Active State
-     sections.forEach(section => {
-         const top = section.offsetTop - 150;
-         const bottom = top + section.offsetHeight;
-         const id = section.getAttribute('id');
+    sections.forEach(section => {
+        const top = section.offsetTop - 150;
+        const bottom = top + section.offsetHeight;
+        const id = section.getAttribute('id');
 
-         if (scrollPos >= top && scrollPos < bottom) {
-             sideLinks.forEach(link => {
-                 link.classList.remove('active');
-                 if (link.getAttribute('data-section') === id) {
-                     link.classList.add('active');
-                 }
-             });
-         }
-     });
- });
+        if (scrollPos >= top && scrollPos < bottom) {
+            sideLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === id) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    });
+});
 
- /* SIDE NAV CLICK HANDLER (FOR HOME) */
- sideLinks.forEach(link => {
-     link.addEventListener('click', (e) => {
-         if (link.getAttribute('data-section') === 'home') {
-             e.preventDefault();
-             window.scrollTo({
-                 top: 0,
-                 behavior: 'smooth'
-             });
-             // Remove hash from URL without jumping
-             history.pushState("", document.title, window.location.pathname + window.location.search);
-         }
-     });
- });
+/* SIDE NAV CLICK HANDLER (FOR HOME) */
+sideLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        if (link.getAttribute('data-section') === 'home') {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            // Remove hash from URL without jumping
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+    });
+});
 
 /* SCROLL REVEAL */
 const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: .15 });
@@ -119,7 +119,7 @@ function showT(id, btn) {
 document.querySelectorAll('.skf').forEach(b => b.style.width = '0');
 
 /* TYPED */
-const roles = ['Software & Web Developer', '.NET & Razor Pages Dev', 'WordPress Specialist', 'Full Stack Developer'];
+const roles = ['.NET Full-Stack Developer', 'ASP.NET Core & Razor Pages', 'WordPress Specialist', 'Web Application Developer'];
 let ri = 0, ci = 0, del = false;
 const tel = document.getElementById('typed');
 function type() {
