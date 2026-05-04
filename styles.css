@@ -1141,7 +1141,7 @@ section {
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 360px;
+    height: 300px;
     transition: transform .3s, border-color .3s, box-shadow .3s;
     cursor: pointer
 }
@@ -1154,12 +1154,13 @@ section {
 
 .pci {
     width: 100%;
-    flex: 1;
+    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    overflow: hidden
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
 .pci.s1 {
@@ -1213,8 +1214,8 @@ section {
     padding: 16px 16px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    min-height: 100px;
+    justify-content: flex-start;
+    flex: 1;
     border-top: 1px solid rgba(79, 142, 247, .1);
 }
 
