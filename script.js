@@ -56,10 +56,53 @@ function mkOrb() {
 for (let i = 0; i < 7; i++) setTimeout(mkOrb, i * 1800);
 
 /* SCROLL PROGRESS + NAV */
+const sideNav = document.getElementById('sideNav');
+const sideLinks = sideNav.querySelectorAll('a');
+const sections = document.querySelectorAll('section');
+
 window.addEventListener('scroll', () => {
-    document.getElementById('pb').style.width = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
-    document.getElementById('nav').classList.toggle('sc', window.scrollY > 40);
-});
+    const scrollPos = window.scrollY;
+    document.getElementById('pb').style.width = (scrollPos / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
+    
+    // Show/Hide Side Nav: only visible starting from the About section
+    const aboutSection = document.getElementById('about');
+    if (aboutSection && scrollPos >= aboutSection.offsetTop - 200) {
+        sideNav.classList.add('visible');
+    } else {
+        sideNav.classList.remove('visible');
+    }
+
+    // Update Side Nav Active State
+     sections.forEach(section => {
+         const top = section.offsetTop - 150;
+         const bottom = top + section.offsetHeight;
+         const id = section.getAttribute('id');
+
+         if (scrollPos >= top && scrollPos < bottom) {
+             sideLinks.forEach(link => {
+                 link.classList.remove('active');
+                 if (link.getAttribute('data-section') === id) {
+                     link.classList.add('active');
+                 }
+             });
+         }
+     });
+ });
+
+ /* SIDE NAV CLICK HANDLER (FOR HOME) */
+ sideLinks.forEach(link => {
+     link.addEventListener('click', (e) => {
+         if (link.getAttribute('data-section') === 'home') {
+             e.preventDefault();
+             window.scrollTo({
+                 top: 0,
+                 behavior: 'smooth'
+             });
+             // Remove hash from URL without jumping
+             history.pushState("", document.title, window.location.pathname + window.location.search);
+         }
+     });
+ });
 
 /* SCROLL REVEAL */
 const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: .15 });

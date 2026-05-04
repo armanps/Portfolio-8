@@ -119,30 +119,138 @@ body {
 /* CONTENT */
 .wrap {
     position: relative;
-    z-index: 2
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 /* NAV */
 nav {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    max-width: 100vw;
     z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 60px;
     height: 72px;
-    background: rgba(8, 12, 24, .85);
+    background: rgba(8, 12, 24, .95);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(79, 142, 247, .08);
     transition: background .3s
 }
 
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 60px;
+    height: 100%;
+}
+
+.nlogo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 36px
+}
+
 nav.sc {
-    background: rgba(8, 12, 24, .97)
+    background: rgba(8, 12, 24, .95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(79, 142, 247, .08)
+}
+
+/* SIDE NAV */
+.side-nav {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%) translateX(-100px);
+    z-index: 200;
+    opacity: 0;
+    visibility: hidden;
+    transition: transform .5s cubic-bezier(0.4, 0, 0.2, 1), opacity .5s, visibility .5s;
+    width: 60px;
+    /* Fixed width to ensure it's a slim strip */
+}
+
+.side-nav.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
+}
+
+.side-nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Center icons horizontally */
+    gap: 10px;
+    background: rgba(15, 22, 35, .6);
+    backdrop-filter: blur(16px);
+    padding: 20px 0;
+    /* Vertical padding only */
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, .4);
+    width: 100%;
+}
+
+.side-nav ul li a {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 17px;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.side-nav ul li a:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, .05);
+}
+
+.side-nav ul li a.active {
+    color: #fff;
+    background: var(--a1);
+    box-shadow: 0 0 20px rgba(79, 142, 247, .5);
+}
+
+.side-nav ul li a::after {
+    content: attr(title);
+    position: absolute;
+    left: 65px;
+    background: var(--card2);
+    color: var(--text);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all .3s;
+    border: 1px solid var(--border);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .3);
+}
+
+.side-nav ul li a:hover::after {
+    opacity: 1;
+    visibility: visible;
+    left: 60px;
 }
 
 .nlogo {
@@ -742,17 +850,16 @@ section {
 }
 
 .ainfo .k {
-    font-size: 10px;
+    font-size: 11px;
     color: var(--a3);
     letter-spacing: .12em;
-    text-transform: uppercase
+    text-transform: uppercase;
 }
 
 .ainfo .v {
-    font-size: 14px;
+    font-size: 11px;
     color: var(--text);
     font-weight: 500;
-    margin-top: 3px
 }
 
 /* SERVICES */
@@ -1186,16 +1293,16 @@ section {
     margin-top: 2px
 }
 
-.cf {
+.cf form {
     display: flex;
     flex-direction: column;
-    gap: 14px
+    gap: 16px
 }
 
 .frow {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px
+    gap: 16px
 }
 
 .cf input,
@@ -1203,7 +1310,7 @@ section {
     background: rgba(15, 22, 35, .8);
     border: 1px solid rgba(255, 255, 255, .07);
     border-radius: 10px;
-    padding: 13px 16px;
+    padding: 16px 16px;
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
@@ -1307,7 +1414,7 @@ footer span {
 }
 
 @media(max-width:900px) {
-    nav {
+    .nav-container {
         padding: 0 24px
     }
 
@@ -1349,10 +1456,29 @@ footer span {
 }
 
 @media(max-width:600px) {
+    .side-nav {
+        display: none;
+    }
+
     nav {
-        padding: 0 64px 0 16px;
         position: fixed;
-        overflow: visible
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100%;
+        max-width: none;
+        border-radius: 0;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        padding: 0 64px 0 16px;
+        overflow: visible;
+        background: rgba(8, 12, 24, .95);
+        backdrop-filter: blur(20px);
+    }
+
+    .nav-container {
+        padding: 0;
     }
 
     .nlogo {
@@ -1425,5 +1551,25 @@ footer span {
 
     .frow {
         grid-template-columns: 1fr
+    }
+
+    .ainfo {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .ainfo>div {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .ainfo .k {
+        flex: 0 0 110px;
+        font-size: 11px;
+    }
+
+    .ainfo .v {
+        margin-top: 0;
+        font-size: 11px;
     }
 }
