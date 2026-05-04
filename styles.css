@@ -1415,6 +1415,15 @@ footer span {
 }
 
 @media(max-width:900px) {
+    .side-nav {
+        top: 100px;
+        transform: translateY(0) translateX(-100px);
+    }
+
+    .side-nav.visible {
+        transform: translateY(0) translateX(0);
+    }
+
     .nav-container {
         padding: 0 24px
     }
