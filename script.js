@@ -108,6 +108,31 @@ sideLinks.forEach(link => {
 const ro = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } }), { threshold: .15 });
 document.querySelectorAll('.rv').forEach(el => ro.observe(el));
 
+/* IMAGE LOADERS FOR PORTFOLIO CARDS */
+document.querySelectorAll('.pci').forEach(card => {
+    const img = card.querySelector('img');
+    if (img) {
+        // Create loader element
+        const loader = document.createElement('div');
+        loader.className = 'image-loader';
+        loader.innerHTML = '<div class="loader-spinner"></div>';
+        card.appendChild(loader);
+
+        // Show loader initially
+        loader.classList.remove('hidden');
+
+        // Hide loader when image loads
+        const hideLoader = () => loader.classList.add('hidden');
+        img.addEventListener('load', hideLoader);
+        img.addEventListener('error', hideLoader);
+
+        // If image is already cached and loaded, hide loader
+        if (img.complete) {
+            hideLoader();
+        }
+    }
+});
+
 /* TABS */
 function showT(id, btn) {
     document.querySelectorAll('.tb').forEach(b => b.classList.remove('on'));
