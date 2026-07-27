@@ -115,7 +115,7 @@ document.querySelectorAll('.pci').forEach(card => {
         // Create loader element
         const loader = document.createElement('div');
         loader.className = 'image-loader';
-        loader.innerHTML = '<div class="loader-spinner"></div>';
+        loader.innerHTML = '<div class="loader-bar-track"><div class="loader-bar-fill"></div></div>';
         card.appendChild(loader);
 
         // Show loader initially
