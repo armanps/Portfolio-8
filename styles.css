@@ -432,12 +432,18 @@ section {
 
 /* REVEAL */
 .rv {
+    opacity: 1;
+    transform: none;
+    transition: none
+}
+
+.js .rv {
     opacity: 0;
     transform: translateY(36px);
     transition: opacity .7s ease, transform .7s ease
 }
 
-.rv.on {
+.js .rv.on {
     opacity: 1;
     transform: translateY(0)
 }
@@ -1164,11 +1170,404 @@ section {
     margin: 48px 0
 }
 
+/* CLIENT ENDORSEMENTS */
+.endorsement-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 24px;
+    max-width: 1120px;
+    margin: 48px auto 0
+}
+
+.endorsement-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 48px 32px 28px;
+    background: linear-gradient(145deg, var(--card), var(--card2));
+    border: 1px solid rgba(79, 142, 247, .16);
+    border-radius: 16px;
+    box-shadow: 0 16px 38px rgba(0, 0, 0, .24), 0 3px 10px rgba(0, 0, 0, .14), inset 0 1px 0 rgba(255, 255, 255, .025);
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease
+}
+
+.endorsement-quote-mark {
+    position: absolute;
+    top: 8px;
+    left: 27px;
+    color: var(--a1);
+    font-family: Georgia, serif;
+    font-size: 104px;
+    line-height: 1;
+    opacity: .18;
+    pointer-events: none
+}
+
+.endorsement-headline {
+    margin: 0 0 18px;
+    color: var(--a1);
+    font-family: 'Michroma', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.4
+}
+
+.endorsement-copy {
+    flex: 1;
+    max-width: 62ch;
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.8
+}
+
+.endorsement-copy p+p {
+    margin-top: 14px
+}
+
+.endorsement-attribution {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border)
+}
+
+.endorsement-avatar {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    padding: 2px;
+    object-fit: contain;
+    background: var(--card);
+    border: 1px solid rgba(79, 142, 247, .28);
+    border-radius: 50%;
+}
+
+.endorsement-author {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 2px
+}
+
+.endorsement-attribution cite {
+    color: var(--text);
+    font-family: 'Michroma', sans-serif;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700
+}
+
+.endorsement-author>span {
+    color: var(--muted);
+    font-size: 13px
+}
+
+.endorsement-attribution a {
+    color: var(--a3);
+    text-decoration: none;
+    transition: color .2s
+}
+
+.endorsement-attribution a:hover {
+    color: var(--text)
+}
+
+.endorsement-attribution a:focus-visible {
+    outline: 2px solid var(--a3);
+    outline-offset: 4px;
+    border-radius: 2px
+}
+
+.endorsement-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(79, 142, 247, .42);
+    box-shadow: 0 22px 46px rgba(0, 0, 0, .3), 0 5px 14px rgba(0, 0, 0, .16), inset 0 1px 0 rgba(255, 255, 255, .035)
+}
+
+.endorsement-attribution a i {
+    margin-left: 3px;
+    font-size: 10px
+}
+
 .pgrid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    margin-top: 60px
+    margin-top: 32px
+}
+
+.pgrid>a {
+    display: flex;
+    flex-direction: column
+}
+
+.pgrid>a>.pc {
+    flex: 1;
+    width: 100%
+}
+
+.portfolio-group-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 48px
+}
+
+.portfolio-group-heading .subsection-title {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.portfolio-view-toggle {
+    display: none;
+    width: max-content;
+    flex: 0 0 auto;
+    gap: 2px;
+    margin-left: auto;
+    padding: 4px;
+    background: linear-gradient(145deg, rgba(20, 28, 47, .94), rgba(15, 22, 35, .9));
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .2), inset 0 1px 0 rgba(255, 255, 255, .035)
+}
+
+.js .portfolio-view-toggle {
+    display: flex
+}
+
+.portfolio-view-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    color: var(--muted);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: color .2s, background .2s, border-color .2s, box-shadow .2s, transform .2s
+}
+
+.portfolio-view-button:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, .07)
+}
+
+.portfolio-view-button.is-active {
+    color: var(--a1);
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none
+}
+
+.portfolio-view-button.is-active:hover {
+    background: transparent
+}
+
+.portfolio-view-button:focus-visible,
+.portfolio-carousel-button:focus-visible,
+.portfolio-carousel-dot:focus-visible {
+    outline: 2px solid var(--a3);
+    outline-offset: 3px
+}
+
+.portfolio-morphing {
+    overflow: visible
+}
+
+.portfolio-morphing .pgrid {
+    scroll-snap-type: none !important;
+    scroll-behavior: auto !important
+}
+
+.portfolio-morphing[data-morph-controls="true"] .portfolio-carousel-controls {
+    display: flex
+}
+
+.portfolio-morphing .pgrid>* {
+    pointer-events: none;
+}
+
+.portfolio-morphing .clone {
+    visibility: hidden
+}
+
+.portfolio-morph-ghost {
+    pointer-events: none !important;
+    transition: none !important
+}
+
+.portfolio-morph-ghost[data-portfolio-morph-from="carousel"] .pd,
+.portfolio-morph-ghost[data-portfolio-morph-to="carousel"] .pd {
+    padding: 0
+}
+
+.portfolio-morph-ghost[data-portfolio-morph-from="carousel"] .pd img,
+.portfolio-morph-ghost[data-portfolio-morph-to="carousel"] .pd img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: top center
+}
+
+[data-portfolio-group][data-view="carousel"] .pgrid {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0;
+    scroll-padding-inline: 0;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab
+}
+
+[data-portfolio-group][data-view="carousel"] .pgrid::-webkit-scrollbar {
+    display: none
+}
+
+[data-portfolio-group][data-view="carousel"] .pgrid>* {
+    display: block;
+    flex: 0 0 100%;
+    min-width: 100%;
+    width: 100%;
+    max-width: none;
+    scroll-snap-align: start;
+    scroll-snap-stop: always
+}
+
+[data-portfolio-group][data-view="carousel"] .pc {
+    height: auto;
+    min-height: 0
+}
+
+[data-portfolio-group][data-view="carousel"] .pc>.pci {
+    height: auto;
+    aspect-ratio: 16 / 10
+}
+
+[data-portfolio-group][data-view="carousel"] .pc .pd {
+    padding: 0
+}
+
+[data-portfolio-group][data-view="carousel"] .pc .pd img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: top center
+}
+
+[data-portfolio-group][data-view="carousel"] .pgrid.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+    user-select: none
+}
+
+[data-portfolio-group][data-view="carousel"] .pgrid.is-dragging a {
+    pointer-events: none
+}
+
+.portfolio-carousel-controls {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    min-height: 44px;
+    margin: 18px auto 0
+}
+
+[data-portfolio-group][data-view="carousel"] .portfolio-carousel-controls {
+    display: flex
+}
+
+.portfolio-carousel-button {
+    display: inline-flex;
+    flex: 0 0 38px;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    color: var(--text);
+    background: rgba(15, 22, 35, .8);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: color .2s, background .2s, border-color .2s, opacity .2s
+}
+
+.portfolio-carousel-button:hover:not(:disabled) {
+    color: #fff;
+    background: rgba(79, 142, 247, .2);
+    border-color: rgba(79, 142, 247, .4)
+}
+
+.portfolio-carousel-button:disabled {
+    opacity: .38;
+    cursor: default
+}
+
+.portfolio-carousel-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px
+}
+
+.portfolio-carousel-dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    background: var(--muted);
+    border: 0;
+    border-radius: 999px;
+    opacity: .5;
+    cursor: pointer;
+    transition: width .2s, opacity .2s, background .2s
+}
+
+.portfolio-carousel-dot.is-active {
+    width: 22px;
+    background: var(--a1);
+    opacity: 1
+}
+
+@media (max-width: 639px) {
+    .portfolio-group-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0
+    }
+
+    .portfolio-view-toggle {
+        margin: .75rem 0 0
+    }
+
+}
+
+/* Hide loop clones in grid view (works for both .pc and <a> wrappers) */
+.pgrid>.clone {
+    display: none;
+}
+
+[data-portfolio-group][data-view="carousel"] .pgrid>.clone {
+    display: block;
 }
 
 .pc {
@@ -1179,7 +1578,8 @@ section {
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 300px;
+    min-height: 300px;
+    height: auto;
     transition: transform .3s, border-color .3s, box-shadow .3s;
     cursor: pointer
 }
@@ -1531,6 +1931,20 @@ footer span {
 }
 
 @media(max-width:900px) {
+    .endorsement-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: 760px
+    }
+
+    .endorsement-card {
+        padding: 44px 36px 28px
+    }
+
+    .endorsement-headline {
+        font-size: 1.2rem
+    }
+
     .side-nav {
         top: 100px;
         transform: translateY(0) translateX(-100px);
@@ -1579,6 +1993,20 @@ footer span {
 
     .skgrid {
         grid-template-columns: 1fr
+    }
+
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+    .side-nav {
+        touch-action: none;
+        cursor: grab;
+        user-select: none
+    }
+
+    .side-nav.dragging {
+        cursor: grabbing;
+        transition: none
     }
 }
 
@@ -1676,6 +2104,26 @@ footer span {
         grid-template-columns: 1fr
     }
 
+    .portfolio-carousel-controls {
+        gap: 10px
+    }
+
+    .portfolio-carousel-button {
+        flex-basis: 32px;
+        width: 32px;
+        height: 32px
+    }
+
+    .endorsement-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        margin-top: 36px
+    }
+
+    .endorsement-card {
+        padding: 46px 22px 24px
+    }
+
     .frow {
         grid-template-columns: 1fr
     }
@@ -1698,5 +2146,41 @@ footer span {
     .ainfo .v {
         margin-top: 0;
         font-size: 11px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto
+    }
+
+    .rv,
+    .rv.on,
+    .js .rv,
+    .js .rv.on,
+    .endorsement-card,
+    .endorsement-card {
+        transition: none
+    }
+
+    .rv,
+    .rv.on,
+    .js .rv,
+    .js .rv.on {
+        opacity: 1;
+        transform: none
+    }
+
+    .pgrid,
+    .portfolio-carousel-controls {
+        transition: none
+    }
+
+    [data-portfolio-group][data-view="carousel"] .pgrid {
+        scroll-behavior: auto
+    }
+
+    .endorsement-card:hover {
+        transform: none
     }
 }

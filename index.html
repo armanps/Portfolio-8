@@ -53,6 +53,7 @@
   {
     "@context": "https://schema.org/",
     "@type": "Person",
+    "@id": "https://arman.serrana.biz/#person",
     "name": "Arman Serrana",
     "url": "https://arman.serrana.biz",
     "jobTitle": ".NET Full-Stack Web Developer & WordPress Specialist",
@@ -89,6 +90,35 @@
     "availableLanguage": ["en"]
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@graph": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Ryan Boothe"
+        },
+        "itemReviewed": {
+          "@id": "https://arman.serrana.biz/#person"
+        },
+        "reviewBody": "I highly recommend Armando for website development work. I hired him to redesign and modernize my business’s website. From the start, he was easy to work with—responsive, clear in his communication, and straightforward about timelines and next steps. He completed the work quickly without sacrificing quality. The result is a clean, mobile-friendly site that better reflects our services and makes it simpler for clients to learn about us and get in touch. Armando was professional throughout and delivered exactly what we needed on a practical timeline. I’d be happy to work with him again and recommend him to anyone looking for a reliable, efficient website developer."
+      },
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "Pastor Keith Birginal"
+        },
+        "itemReviewed": {
+          "@id": "https://arman.serrana.biz/#person"
+        },
+        "reviewBody": "When our old website was about to renew at a higher price, I was ready to cancel it altogether. It had brought us almost no real inquiries. Arman offered to rebuild it, and I'm so glad he did. He gathered our documents and information thoroughly, then did nearly all the work himself. I've taken web design classes, but his design and technical skills blew me away. The result was a site I loved and made me proud of my institution. The site was beautiful, accurate, and genuinely inspiring. Almost immediately, we began receiving inquiries from around the world, and we were able to convert those inquiries to enrolled students. As interest grew, Arman set up front- and back-end systems so we could respond to people and handle sensitive information professionally. Throughout the project he was careful about privacy and only asked for the access he actually needed. But he didn't just build the site and leave. He kept improving it, both on his own initiative and from my feedback, suggesting changes and cutting anything that was cluttered or distracting. I recommend Arman without hesitation."
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -119,6 +149,7 @@
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#endorsements">Endorsements</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>
@@ -130,6 +161,7 @@
       <li><a href="#about" data-section="about" title="About"><i class="fas fa-user"></i></a></li>
       <li><a href="#services" data-section="services" title="Services"><i class="fas fa-briefcase"></i></a></li>
       <li><a href="#portfolio" data-section="portfolio" title="Portfolio"><i class="fas fa-th-large"></i></a></li>
+      <li><a href="#endorsements" data-section="endorsements" title="Endorsements"><i class="fas fa-quote-left"></i></a></li>
       <li><a href="#contact" data-section="contact" title="Contact"><i class="fas fa-envelope"></i></a></li>
     </ul>
   </nav>
@@ -156,8 +188,9 @@
       </div>
       <div class="himg">
         <div class="hframe">
-          <img src="images/me.jpg" alt="Arman Serrana - Full-Stack Web Developer and .NET Specialist" width="420"
-            height="525" loading="lazy" style="width:100%; height:100%; object-fit:cover;">
+          <img src="images/me.webp" alt="Arman Serrana - Full-Stack Web Developer and .NET Specialist" width="420"
+            height="525" loading="eager" fetchpriority="high" decoding="async"
+            style="width:100%; height:100%; object-fit:cover;">
         </div>
         <div class="hstat">
           <div class="num">20+</div>
@@ -172,8 +205,8 @@
       <h2 class="stit rv d1">About Me</h2>
       <div class="agrid">
         <div class="aiwrap rv d1">
-          <div class="ai"><img src="images/arman-programmer.png" alt="Arman Serrana - Programmer and Web Developer"
-              width="400" height="400" loading="lazy"></div>
+          <div class="ai"><img src="images/arman-programmer.webp" alt="Arman Serrana - Programmer and Web Developer"
+              width="400" height="400" loading="lazy" decoding="async"></div>
           <div class="abadge ab1"><i class="fas fa-check-circle"></i> .NET &amp; Razor Pages</div>
           <div class="abadge ab2"><i class="fab fa-wordpress"></i> WordPress Expert</div>
         </div>
@@ -250,14 +283,27 @@
       <p class="ssub rv d2">A selection of projects spanning web apps, WordPress builds, and frontend UI work.</p>
 
       <!-- Built & Shipped -->
-      <h3 class="subsection-title rv d1">Built & Shipped</h3>
-      <p class="ssub rv d2">Designed, built, and deployed internal apps for NobleLife International.</p>
-      <div class="pgrid">
+      <div class="portfolio-group" data-portfolio-group data-group-key="built-shipped">
+        <div class="portfolio-group-heading">
+          <h3 class="subsection-title rv d1">Built & Shipped</h3>
+          <div class="portfolio-view-toggle" role="group" aria-label="Change view for Built &amp; Shipped">
+            <button class="portfolio-view-button" type="button" data-view="grid" aria-label="Grid view"
+              title="Grid view" aria-pressed="true">
+              <i class="fas fa-th-large" aria-hidden="true"></i>
+            </button>
+            <button class="portfolio-view-button" type="button" data-view="carousel" aria-label="Carousel view"
+              title="Carousel view" aria-pressed="false">
+              <i class="fas fa-images" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <p class="ssub rv d2">Designed, built, and deployed internal apps for NobleLife International.</p>
+        <div class="pgrid">
         <div class="pc rv d1">
           <div class="pci s1">
             <div class="pgb"></div>
-            <div class="pd"><img src="images/apps/pos.png" alt="POS Application - Full-featured Point of Sale System"
-                loading="lazy"></div>
+            <div class="pd"><img src="images/apps/pos.webp" alt="POS Application - Full-featured Point of Sale System"
+                loading="lazy" decoding="async"></div>
           </div>
           <div class="po">
             <h4>POS Application</h4>
@@ -270,8 +316,8 @@
         <div class="pc rv d2">
           <div class="pci s2">
             <div class="pgb"></div>
-            <div class="pd"><img src="images/apps/emrs.png" alt="Electronic Medical Records System - Patient Management"
-                loading="lazy"></div>
+            <div class="pd"><img src="images/apps/emrs.webp" alt="Electronic Medical Records System - Patient Management"
+                loading="lazy" decoding="async"></div>
           </div>
           <div class="po">
             <h4>Electronic Medical Records</h4>
@@ -283,8 +329,8 @@
         <div class="pc rv d3">
           <div class="pci s3">
             <div class="pgb"></div>
-            <div class="pd"><img src="images/apps/sms.png" alt="Sales Monitoring System - Real-Time Analytics"
-                loading="lazy"></div>
+            <div class="pd"><img src="images/apps/sms.webp" alt="Sales Monitoring System - Real-Time Analytics"
+                loading="lazy" decoding="async"></div>
           </div>
           <div class="po">
             <h4>Sales Monitoring System</h4>
@@ -292,20 +338,34 @@
               Performance Scorecards. Built with ASP.NET Core 6.0 and MySQL.</p>
           </div>
         </div>
+        </div>
       </div>
 
       <div class="section-separator"></div>
 
       <!-- Live Projects -->
-      <h3 class="subsection-title rv d1">Selected Live Projects</h3>
-      <div class="pgrid">
+      <div class="portfolio-group" data-portfolio-group data-group-key="live-projects">
+        <div class="portfolio-group-heading">
+          <h3 class="subsection-title rv d1">Selected Live Projects</h3>
+          <div class="portfolio-view-toggle" role="group" aria-label="Change view for Selected Live Projects">
+            <button class="portfolio-view-button" type="button" data-view="grid" aria-label="Grid view"
+              title="Grid view" aria-pressed="true">
+              <i class="fas fa-th-large" aria-hidden="true"></i>
+            </button>
+            <button class="portfolio-view-button" type="button" data-view="carousel" aria-label="Carousel view"
+              title="Carousel view" aria-pressed="false">
+              <i class="fas fa-images" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="pgrid">
         <a href="https://maisoninabel.com" target="_blank" rel="noopener noreferrer"
           style="text-decoration: none; color: inherit;">
           <div class="pc rv d1">
             <div class="pci s1">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan" src="images/work-live/maisoninabel.png"
-                  alt="Maison Inabel - WooCommerce Heritage Textiles Store" loading="lazy"></div>
+              <div class="pd"><img class="pd-pan" src="images/work-live/maisoninabel.webp"
+                  alt="Maison Inabel - WooCommerce Heritage Textiles Store" loading="lazy" decoding="async"></div>
             </div>
             <div class="po">
               <h4>Maison Inabel</h4>
@@ -318,8 +378,8 @@
           <div class="pc rv d1">
             <div class="pci s1">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan" src="images/work-live/dlm.png"
-                  alt="DLM Eventive Singapore - Events Management Website" loading="lazy"></div>
+              <div class="pd"><img class="pd-pan" src="images/work-live/dlm.webp"
+                  alt="DLM Eventive Singapore - Events Management Website" loading="lazy" decoding="async"></div>
             </div>
             <div class="po">
               <h4>DLM Eventive Singapore</h4>
@@ -333,8 +393,8 @@
           <div class="pc rv d3">
             <div class="pci s3">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan" src="images/work-live/mts.png"
-                  alt="My Ticket Seats - Online Ticketing Platform" loading="lazy"></div>
+              <div class="pd"><img class="pd-pan" src="images/work-live/mts.webp"
+                  alt="My Ticket Seats - Online Ticketing Platform" loading="lazy" decoding="async"></div>
             </div>
             <div class="po">
               <h4>Online Ticketing System</h4>
@@ -348,8 +408,8 @@
           <div class="pc rv d2">
             <div class="pci s2">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan" src="images/work-live/noblelife.png"
-                  alt="Noble Life International - Natural Health Products" loading="lazy"></div>
+              <div class="pd"><img class="pd-pan" src="images/work-live/noblelife.webp"
+                  alt="Noble Life International - Natural Health Products" loading="lazy" decoding="async"></div>
             </div>
             <div class="po">
               <h4>Noble Life International</h4>
@@ -357,51 +417,65 @@
             </div>
           </div>
         </a>
-        <a href="https://mcsqsolutions.com/" target="_blank" rel="noopener noreferrer"
+        <a href="https://www.dayspringbaptistcollege.com/" target="_blank" rel="noopener noreferrer"
           style="text-decoration: none; color: inherit;">
           <div class="pc rv d2">
             <div class="pci s2">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan" src="images/work-live/mcsqsolutions.png"
-                  alt="MCSquared Solutions - Corporate Website" loading="lazy"></div>
+              <div class="pd"><img class="pd-pan" src="images/work-live/dayspringbaptistcollege.com.webp"
+                  alt="Dayspring Baptist College - Philippines" loading="lazy" decoding="async"></div>
 
             </div>
             <div class="po">
-              <h4>MCSquared Solutions</h4>
-              <p>Elementor-based corporate site design &amp; build </p>
-              <span class="badge badge-progress">In Progress</span>
+              <h4>Dayspring Baptist College</h4>
+              <p>Website for a Baptist college in the Philippines</p>
             </div>
           </div>
         </a>
-        <a href="https://anciprime.com/" target="_blank" rel="noopener noreferrer"
+        <a href="https://schooltranslations.com/" target="_blank" rel="noopener noreferrer"
           style="text-decoration: none; color: inherit;">
           <div class="pc rv d3">
             <div class="pci s3">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan" src="images/work-live/anci-prime.png" alt="ANCI Prime" loading="lazy">
+              <div class="pd"><img class="pd-pan" src="images/work-live/schooltranslations.webp"
+                  alt="School Translations - School communication and translation services" loading="lazy"
+                  decoding="async">
               </div>
             </div>
             <div class="po">
-              <h4>ANCI Prime</h4>
-              <span class="badge badge-progress">In Progress</span>
-              <p>A modern website for a wellness brand with online shopping and distributor features.</p>
+              <h4>School Translations</h4>
+              <p>Translation services for schools, parent communications, and educational documents</p>
             </div>
           </div>
         </a>
+        </div>
       </div>
 
       <div class="section-separator"></div>
 
       <!-- Concept Designs -->
-      <h3 class="subsection-title rv d1">Concept Designs</h3>
-      <div class="pgrid">
+      <div class="portfolio-group" data-portfolio-group data-group-key="concept-designs">
+        <div class="portfolio-group-heading">
+          <h3 class="subsection-title rv d1">Concept Designs</h3>
+          <div class="portfolio-view-toggle" role="group" aria-label="Change view for Concept Designs">
+            <button class="portfolio-view-button" type="button" data-view="grid" aria-label="Grid view"
+              title="Grid view" aria-pressed="true">
+              <i class="fas fa-th-large" aria-hidden="true"></i>
+            </button>
+            <button class="portfolio-view-button" type="button" data-view="carousel" aria-label="Carousel view"
+              title="Carousel view" aria-pressed="false">
+              <i class="fas fa-images" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <div class="pgrid">
         <a href="http://chateaudelafuente.serrana.biz/" target="_blank" rel="noopener noreferrer"
           style="text-decoration: none; color: inherit;">
           <div class="pc rv d1">
             <div class="pci s1">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan"
-                  src="images/concepts/Screenshot 2026-07-27 at 21-57-00 Chateau Dela Fuente — Laiya San Juan Batangas.png"
+              <div class="pd"><img class="pd-pan" width="1857" height="11502" decoding="async"
+                  src="images/concepts/Screenshot 2026-07-27 at 21-57-00 Chateau Dela Fuente — Laiya San Juan Batangas.webp"
                   alt="Chateau Dela Fuente - Resort and Hospitality Website" loading="lazy"></div>
             </div>
             <div class="po">
@@ -415,8 +489,8 @@
           <div class="pc rv d2">
             <div class="pci s2">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan"
-                  src="images/concepts/Screenshot 2026-07-25 at 13-08-48 14-54 East Art Studio — Photography.png"
+              <div class="pd"><img class="pd-pan" width="1857" height="10067" decoding="async"
+                  src="images/concepts/Screenshot 2026-07-25 at 13-08-48 14-54 East Art Studio — Photography.webp"
                   alt="Creative Agency & Photography Studio Website" loading="lazy"></div>
             </div>
             <div class="po">
@@ -430,8 +504,8 @@
           <div class="pc rv d3">
             <div class="pci s3">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan"
-                  src="images/concepts/Screenshot 2026-07-27 at 21-59-04 Oak & Smoke - Binchotan Grill · Asian Bistro.png"
+              <div class="pd"><img class="pd-pan" width="1857" height="9601" decoding="async"
+                  src="images/concepts/Screenshot 2026-07-27 at 21-59-04 Oak & Smoke - Binchotan Grill · Asian Bistro.webp"
                   alt="Oak & Smoke - Asian Bistro Restaurant Website" loading="lazy"></div>
             </div>
             <div class="po">
@@ -445,7 +519,8 @@
           <div class="pc rv d1">
             <div class="pci s1">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan" src="images/concepts/Screenshot 2026-07-27 at 22-00-31 Delicere.png"
+              <div class="pd"><img class="pd-pan" width="1857" height="11548" decoding="async"
+                  src="images/concepts/Screenshot 2026-07-27 at 22-00-31 Delicere.webp"
                   alt="Delicere - Food and Culinary Website" loading="lazy"></div>
             </div>
             <div class="po">
@@ -459,8 +534,8 @@
           <div class="pc rv d2">
             <div class="pci s2">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan"
-                  src="images/concepts/Screenshot 2026-07-27 at 22-01-01 Miguel & Maria — Where Comfort Starts.png"
+              <div class="pd"><img class="pd-pan" width="1857" height="7898" decoding="async"
+                  src="images/concepts/Screenshot 2026-07-27 at 22-01-01 Miguel & Maria — Where Comfort Starts.webp"
                   alt="Miguel & Maria - Restaurant Concept" loading="lazy"></div>
             </div>
             <div class="po">
@@ -474,8 +549,8 @@
           <div class="pc rv d3">
             <div class="pci s3">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan"
-                  src="images/concepts/Screenshot 2026-07-27 at 22-01-25 Noah & Eve Center.png"
+              <div class="pd"><img class="pd-pan" width="1857" height="8442" decoding="async"
+                  src="images/concepts/Screenshot 2026-07-27 at 22-01-25 Noah & Eve Center.webp"
                   alt="Noah & Eve Center - Community Center Website" loading="lazy"></div>
             </div>
             <div class="po">
@@ -489,8 +564,8 @@
           <div class="pc rv d1">
             <div class="pci s1">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan"
-                  src="images/concepts/Screenshot 2026-07-27 at 22-01-47 Ombu Kusina — Modern Filipino Cuisine.png"
+              <div class="pd"><img class="pd-pan" width="1857" height="6608" decoding="async"
+                  src="images/concepts/Screenshot 2026-07-27 at 22-01-47 Ombu Kusina — Modern Filipino Cuisine.webp"
                   alt="Ombu Kusina - Filipino Restaurant Website" loading="lazy"></div>
             </div>
             <div class="po">
@@ -504,8 +579,8 @@
           <div class="pc rv d2">
             <div class="pci s2">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan"
-                  src="images/concepts/Screenshot 2026-07-27 at 22-02-15 Pillar of Faith Baptist Church — Naperville IL.png"
+              <div class="pd"><img class="pd-pan" width="1857" height="8072" decoding="async"
+                  src="images/concepts/Screenshot 2026-07-27 at 22-02-15 Pillar of Faith Baptist Church — Naperville IL.webp"
                   alt="Pillar of Faith Baptist Church - Church Website" loading="lazy"></div>
             </div>
             <div class="po">
@@ -519,8 +594,8 @@
           <div class="pc rv d3">
             <div class="pci s3">
               <div class="pgb"></div>
-              <div class="pd"><img class="pd-pan"
-                  src="images/concepts/Screenshot 2026-07-27 at 22-02-34 Asia Baptist Bible College.png"
+              <div class="pd"><img class="pd-pan" width="1857" height="7037" decoding="async"
+                  src="images/concepts/Screenshot 2026-07-27 at 22-02-34 Asia Baptist Bible College.webp"
                   alt="Asia Baptist Bible College - Educational Institution Website" loading="lazy"></div>
             </div>
             <div class="po">
@@ -529,6 +604,48 @@
             </div>
           </div>
         </a>
+      </div>
+      </div>
+    </section>
+
+    <!-- CLIENT ENDORSEMENTS -->
+    <section id="endorsements">
+      <h2 class="stit rv d1">Client Endorsements</h2>
+      <p class="ssub rv d2">What clients have to say about working together.</p>
+      <div class="endorsement-grid">
+        <figure class="endorsement-card rv d2">
+          <span class="endorsement-quote-mark" aria-hidden="true">“</span>
+          <h3 class="endorsement-headline">I highly recommend Armando for website development work.</h3>
+          <blockquote class="endorsement-copy">
+            <p>I highly recommend Armando for website development work.</p>
+            <p>I hired him to redesign and modernize my business’s website. From the start, he was easy to work with—responsive, clear in his communication, and straightforward about timelines and next steps. He completed the work quickly without sacrificing quality.</p>
+            <p>The result is a clean, mobile-friendly site that better reflects our services and makes it simpler for clients to learn about us and get in touch. Armando was professional throughout and delivered exactly what we needed on a practical timeline.</p>
+            <p>I’d be happy to work with him again and recommend him to anyone looking for a reliable, efficient website developer.</p>
+          </blockquote>
+          <figcaption class="endorsement-attribution">
+            <img class="endorsement-avatar" src="images/schooltranslations.webp" alt="SchoolTranslations.com logo" width="44" height="44" loading="lazy">
+            <span class="endorsement-author">
+              <cite>Ryan Boothe</cite>
+              <span>Owner, <a href="https://schooltranslations.com/" target="_blank" rel="noopener noreferrer">SchoolTranslations.com <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></span>
+            </span>
+          </figcaption>
+        </figure>
+        <figure class="endorsement-card rv d2">
+          <span class="endorsement-quote-mark" aria-hidden="true">“</span>
+          <h3 class="endorsement-headline">Almost immediately, we began receiving inquiries from around the world.</h3>
+          <blockquote class="endorsement-copy">
+            <p>When our old website was about to renew at a higher price, I was ready to cancel it altogether. It had brought us almost no real inquiries. Arman offered to rebuild it, and I'm so glad he did. He gathered our documents and information thoroughly, then did nearly all the work himself. I've taken web design classes, but his design and technical skills blew me away. The result was a site I loved and made me proud of my institution. The site was beautiful, accurate, and genuinely inspiring.</p>
+            <p>Almost immediately, we began receiving inquiries from around the world, and we were able to convert those inquiries to enrolled students. As interest grew, Arman set up front- and back-end systems so we could respond to people and handle sensitive information professionally. Throughout the project he was careful about privacy and only asked for the access he actually needed.</p>
+            <p>But he didn't just build the site and leave. He kept improving it, both on his own initiative and from my feedback, suggesting changes and cutting anything that was cluttered or distracting. I recommend Arman without hesitation.</p>
+          </blockquote>
+          <figcaption class="endorsement-attribution">
+            <img class="endorsement-avatar" src="images/dayspring.webp" alt="Dayspring Baptist College logo" width="44" height="44" loading="lazy">
+            <span class="endorsement-author">
+              <cite>Pastor Keith Birginal</cite>
+              <span>Dean, <a href="https://www.dayspringbaptistcollege.com/" target="_blank" rel="noopener noreferrer">Dayspring Baptist College <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i></a></span>
+            </span>
+          </figcaption>
+        </figure>
       </div>
     </section>
 
