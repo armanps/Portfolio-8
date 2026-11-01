@@ -329,6 +329,15 @@ nav ul a:hover::after {
     width: 100%
 }
 
+/* Header nav shows text on desktop; icons are enabled only on tablet */
+#navMenu a i {
+    display: none !important;
+}
+
+.nav-label {
+    display: inline;
+}
+
 .hamburger {
     display: none;
     width: 40px;
@@ -583,6 +592,28 @@ section {
 
 .btn-p:hover::before {
     opacity: 1
+}
+
+.btn-s {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s;
+    margin-top: 16px;
+}
+
+.btn-s:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--a1);
+    color: var(--a1);
 }
 
 .soc {
@@ -1403,22 +1434,19 @@ section {
     visibility: hidden
 }
 
-.portfolio-morph-ghost {
+/* Morph ghosts: positioned by JS in document coordinates, below the sticky nav (z-index 100).
+   Looks (image padding, crop, size) are interpolated in JS, so no per-direction overrides here. */
+.pc.portfolio-morph-ghost {
     pointer-events: none !important;
-    transition: none !important
+    transition: none !important;
+    will-change: transform, opacity;
+    contain: layout style;
+    backface-visibility: hidden
 }
 
-.portfolio-morph-ghost[data-portfolio-morph-from="carousel"] .pd,
-.portfolio-morph-ghost[data-portfolio-morph-to="carousel"] .pd {
-    padding: 0
-}
-
-.portfolio-morph-ghost[data-portfolio-morph-from="carousel"] .pd img,
-.portfolio-morph-ghost[data-portfolio-morph-to="carousel"] .pd img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: top center
+.portfolio-morph-ghost .pd,
+.portfolio-morph-ghost .pd img {
+    will-change: auto
 }
 
 [data-portfolio-group][data-view="carousel"] .pgrid {
@@ -1561,13 +1589,14 @@ section {
 
 }
 
-/* Hide loop clones in grid view (works for both .pc and <a> wrappers) */
+/* Hide loop clones in grid view (works for both .pc and <a> wrappers).
+   !important is required because some card wrappers carry an inline display value. */
 .pgrid>.clone {
-    display: none;
+    display: none !important;
 }
 
 [data-portfolio-group][data-view="carousel"] .pgrid>.clone {
-    display: block;
+    display: block !important;
 }
 
 .pc {
@@ -1669,6 +1698,102 @@ section {
     font-size: 12px;
     color: var(--muted);
     line-height: 1.5
+}
+
+/* PREVIEW LIGHTBOX (EMR / SMS cards without a case study) */
+.pc[data-preview]:focus-visible {
+    outline: 2px solid var(--a1);
+    outline-offset: 3px;
+}
+
+.preview-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: rgba(4, 7, 14, .92);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity .25s ease
+}
+
+.preview-lightbox[hidden] {
+    display: none
+}
+
+.preview-lightbox.on {
+    opacity: 1
+}
+
+.preview-figure {
+    margin: 0;
+    max-width: min(1200px, 92vw);
+    max-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transform: scale(.96);
+    transition: transform .25s ease
+}
+
+.preview-lightbox.on .preview-figure {
+    transform: scale(1)
+}
+
+.preview-figure img {
+    width: 100%;
+    height: auto;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .6)
+}
+
+.preview-figure figcaption {
+    font-family: 'Michroma', sans-serif;
+    font-size: 13px;
+    letter-spacing: .04em;
+    color: var(--text);
+    text-align: center
+}
+
+.preview-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: rgba(15, 22, 35, .9);
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    transition: background .2s, border-color .2s, transform .2s
+}
+
+.preview-close:hover {
+    background: rgba(79, 142, 247, .2);
+    border-color: rgba(79, 142, 247, .4);
+    transform: rotate(90deg)
+}
+
+@media (max-width: 640px) {
+    .preview-lightbox {
+        padding: 20px
+    }
+
+    .preview-close {
+        top: 14px;
+        right: 14px
+    }
 }
 
 /* IMAGE LOADER */
@@ -2007,6 +2132,39 @@ footer span {
     .side-nav.dragging {
         cursor: grabbing;
         transition: none
+    }
+
+    /* Header menu becomes an icon row on tablet */
+    nav ul {
+        gap: 8px
+    }
+
+    nav ul a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        font-size: 16px;
+        transition: all .3s cubic-bezier(0.4, 0, 0.2, 1)
+    }
+
+    #navMenu a i {
+        display: inline-block !important;
+    }
+
+    #navMenu a .nav-label {
+        display: none !important;
+    }
+
+    nav ul a::after {
+        display: none
+    }
+
+    nav ul a:hover {
+        color: var(--text);
+        background: rgba(255, 255, 255, .06)
     }
 }
 

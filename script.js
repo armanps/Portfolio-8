@@ -475,16 +475,48 @@ function initPortfolioGroup(group) {
     function setView(view) {
         if (morphCleanup && view === morphTargetView) return;
 
+        /* ------------------------------------------------------------------
+           Motion tokens. Every part of the morph shares one clock so the
+           card, its neighbours, the group height and the controls feel like
+           a single choreographed movement rather than separate effects.
+           ------------------------------------------------------------------ */
+        const DURATION = 700;                                   // lead card + group height
+        const EASE_MOVE = 'cubic-bezier(0.2, 0, 0, 1)';         // eased start, long soft landing
+        const EASE_FADE = 'cubic-bezier(0.4, 0, 0.2, 1)';       // standard ease for opacity
+        const SCALE_HIDDEN = 0.96;                              // neighbours breathe in/out
+
+        const toDoc = rect => ({
+            left: rect.left + window.scrollX,
+            top: rect.top + window.scrollY,
+            width: rect.width,
+            height: rect.height
+        });
+
+        // Everything the morph interpolates for one card, measured from the
+        // real card or from a live ghost (used when the user interrupts).
+        const measureCard = (card, ghost = null) => {
+            const el = ghost || card;
+            const pci = el.querySelector('.pci');
+            const pd = el.querySelector('.pd');
+            const img = el.querySelector('.pd img');
+            const imgRect = img ? img.getBoundingClientRect() : null;
+            return {
+                rect: toDoc(el.getBoundingClientRect()),
+                pciHeight: pci ? pci.getBoundingClientRect().height : 0,
+                padding: pd ? getComputedStyle(pd).padding : '0px',
+                imgWidth: imgRect ? imgRect.width : 0,
+                imgHeight: imgRect ? imgRect.height : 0,
+                imgPosition: img ? getComputedStyle(img).objectPosition : '50% 50%',
+                opacity: ghost ? Number(getComputedStyle(ghost).opacity) : 1
+            };
+        };
+
+        /* -------- Interruption: remember where every live ghost is -------- */
         const startingOverrides = new Map();
+        let controlsGhostStart = null;
         if (morphCleanup) {
             morphGhosts.forEach((ghost, card) => {
-                const rect = ghost.getBoundingClientRect();
-                const pci = ghost.querySelector('.pci');
-                startingOverrides.set(card, {
-                    rect,
-                    pciHeight: pci ? pci.getBoundingClientRect().height : null,
-                    opacity: Number(getComputedStyle(ghost).opacity)
-                });
+                startingOverrides.set(card, measureCard(card, ghost));
             });
             morphAnimations.forEach(animation => animation.cancel());
             morphCleanup();
@@ -511,9 +543,6 @@ function initPortfolioGroup(group) {
         const shouldAnimate = !portfolioMotionPreference.matches &&
             typeof Element.prototype.animate === 'function' &&
             originalCards.length > 0;
-        const duration = 600;
-        const controlsDuration = 150;
-        const easing = 'cubic-bezier(0.22, 1, 0.36, 1)';
         const getCard = item => item.matches('.pc') ? item : item.querySelector('.pc');
         const realCards = originalCards.map(getCard).filter(Boolean);
         const trackStyles = ['overflow', 'scrollSnapType', 'scrollBehavior'];
@@ -567,65 +596,91 @@ function initPortfolioGroup(group) {
             return;
         }
 
+        /* ------------------------- FIRST (before) ------------------------- */
         const firstGroupRect = group.getBoundingClientRect();
-        const firstCards = new Map(realCards.map(card => {
-            const override = startingOverrides.get(card);
-            const pci = card.querySelector('.pci');
-            return [card, {
-                rect: override?.rect || card.getBoundingClientRect(),
-                pciHeight: override?.pciHeight ?? pci?.getBoundingClientRect().height ?? 0,
-                opacity: override?.opacity ?? 1,
-                visibility: card.style.visibility
-            }];
-        }));
+        const firstCards = new Map(realCards.map(card => [card, startingOverrides.get(card) || measureCard(card)]));
+        const savedVisibility = new Map(realCards.map(card => [card, card.style.visibility]));
         const savedTrackStyles = saveInlineStyles(track, trackStyles);
         const savedGroupStyles = saveInlineStyles(group, groupStyles);
         const savedControlsStyles = saveInlineStyles(controls, ['opacity', 'transform']);
         const savedMorphControls = group.getAttribute('data-morph-controls');
+        const leadCard = view === 'carousel' ? realCards[0] : realCards[visibleCardIndex];
         const ghosts = new Map();
         const animations = [];
+        let controlsGhost = null;
         let cleaned = false;
-        let gridPreFadeAnimation = null;
 
-        const ghostCards = view === 'carousel'
-            ? realCards.slice(0, 1)
-            : previousView === 'carousel'
-                ? [realCards[visibleCardIndex]]
-                : realCards;
-        ghostCards.forEach(card => {
+        // Ghosts live in the document (absolute, document coordinates) rather
+        // than the viewport (fixed), so a scroll during the morph can't make
+        // them drift away from the page. They sit below the sticky nav.
+        const placeGhost = (ghost, rect) => {
+            Object.assign(ghost.style, {
+                position: 'absolute',
+                left: '0px',
+                top: '0px',
+                width: `${rect.width}px`,
+                height: `${rect.height}px`,
+                transform: `translate(${rect.left}px, ${rect.top}px)`
+            });
+        };
+
+        realCards.forEach(card => {
             const ghost = card.cloneNode(true);
             [ghost, ...ghost.querySelectorAll('*')].forEach(element => {
                 element.classList.remove('rv', 'on', 'clone');
                 element.removeAttribute('id');
             });
-            ghost.style.visibility = 'visible';
-            const source = firstCards.get(card);
-            const rect = source.rect;
+            // A lazy, async-decoded clone paints blank for its first frames.
+            // The original is already loaded, so force the clone to paint now.
+            ghost.querySelectorAll('img').forEach(image => {
+                image.loading = 'eager';
+                image.decoding = 'sync';
+            });
             const computed = getComputedStyle(card);
+            const isLead = card === leadCard;
             ghost.classList.add('portfolio-morph-ghost');
-            ghost.dataset.portfolioMorphFrom = previousView;
-            ghost.dataset.portfolioMorphTo = view;
             ghost.setAttribute('aria-hidden', 'true');
             Object.assign(ghost.style, {
-                position: 'fixed',
-                left: `${rect.left}px`,
-                top: `${rect.top}px`,
-                width: `${rect.width}px`,
-                height: `${rect.height}px`,
                 margin: '0',
+                minHeight: '0',
                 boxSizing: 'border-box',
                 pointerEvents: 'none',
-                zIndex: '9999',
-                opacity: String(source.opacity),
-                transform: 'none',
+                zIndex: isLead ? '51' : '50',
+                visibility: 'visible',
                 transition: 'none',
                 borderRadius: computed.borderRadius,
                 boxShadow: computed.boxShadow
             });
+            placeGhost(ghost, firstCards.get(card).rect);
+            ghost.style.opacity = String(firstCards.get(card).opacity);
             document.body.appendChild(ghost);
             ghosts.set(card, ghost);
         });
-        ghostCards.forEach(card => {
+
+        // The controls bar is only a decoration while it fades, so on the way
+        // back to the grid a static copy fades out *while* the cards move
+        // (no more waiting for it before anything starts).
+        if (previousView === 'carousel') {
+            const controlsRect = toDoc(controls.getBoundingClientRect());
+            controlsGhost = controls.cloneNode(true);
+            controlsGhost.removeAttribute('id');
+            controlsGhost.setAttribute('aria-hidden', 'true');
+            controlsGhost.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+            Object.assign(controlsGhost.style, {
+                display: 'flex',
+                position: 'absolute',
+                left: `${controlsRect.left}px`,
+                top: `${controlsRect.top}px`,
+                width: `${controlsRect.width}px`,
+                height: `${controlsRect.height}px`,
+                margin: '0',
+                pointerEvents: 'none',
+                zIndex: '50'
+            });
+            document.body.appendChild(controlsGhost);
+        }
+
+        realCards.forEach(card => {
             card.style.visibility = 'hidden';
         });
 
@@ -652,10 +707,10 @@ function initPortfolioGroup(group) {
             if (cleaned) return;
             cleaned = true;
             animations.forEach(animation => animation.cancel());
-            gridPreFadeAnimation?.cancel();
             ghosts.forEach(ghost => ghost.remove());
-            firstCards.forEach((saved, card) => {
-                card.style.visibility = saved.visibility;
+            controlsGhost?.remove();
+            realCards.forEach(card => {
+                card.style.visibility = savedVisibility.get(card);
             });
             restoreInlineStyles(track, savedTrackStyles);
             restoreInlineStyles(group, savedGroupStyles);
@@ -675,108 +730,127 @@ function initPortfolioGroup(group) {
         group.classList.add('portfolio-morphing');
         track.style.scrollSnapType = 'none';
         track.style.scrollBehavior = 'auto';
+        // Only needed going *to* the carousel: the real bar is already at its
+        // final position and fades in. Going back, the ghost copy handles it.
         if (view === 'carousel') group.dataset.morphControls = 'true';
 
-        const animateMorph = () => {
-            if (morphCleanup !== cleanup) return;
+        /* ------------------------ LAST (after) + PLAY ------------------------ */
+        setViewState();
+        const lastGroupHeight = group.getBoundingClientRect().height;
+        const lastCards = new Map(realCards.map(card => [card, measureCard(card)]));
+        group.style.height = `${firstGroupRect.height}px`;
 
-            setViewState();
-            const lastGroupHeight = group.getBoundingClientRect().height;
-            const lastRects = new Map(realCards.map(card => [card, card.getBoundingClientRect()]));
-            const lastPciHeights = new Map(realCards.map(card => [
-                card,
-                card.querySelector('.pci')?.getBoundingClientRect().height ?? 0
-            ]));
-            group.style.height = `${firstGroupRect.height}px`;
-            const selectedCard = previousView === 'carousel'
-                ? realCards[visibleCardIndex]
-                : realCards[0];
-
-            ghosts.forEach((ghost, card) => {
-                const first = firstCards.get(card);
-                const last = lastRects.get(card);
-                if (!first || !last) return;
-
-                if (card === selectedCard) {
-                    const ghostPci = ghost.querySelector('.pci');
-                    animations.push(ghost.animate([
-                        {
-                            left: `${first.rect.left}px`,
-                            top: `${first.rect.top}px`,
-                            width: `${first.rect.width}px`,
-                            height: `${first.rect.height}px`
-                        },
-                        {
-                            left: `${last.left}px`,
-                            top: `${last.top}px`,
-                            width: `${last.width}px`,
-                            height: `${last.height}px`
-                        }
-                    ], { duration, easing, fill: 'both' }));
-                    if (ghostPci) {
-                        animations.push(ghostPci.animate([
-                            { height: `${first.pciHeight}px` },
-                            { height: `${lastPciHeights.get(card)}px` }
-                        ], { duration, easing, fill: 'both' }));
-                    }
-                } else if (view === 'grid') {
-                    Object.assign(ghost.style, {
-                        left: `${last.left}px`,
-                        top: `${last.top}px`,
-                        width: `${last.width}px`,
-                        height: `${last.height}px`,
-                        opacity: '0',
-                        transform: 'scale(0.94)'
-                    });
-                    animations.push(ghost.animate([
-                        { opacity: 0, transform: 'scale(0.94)', offset: 0.4 },
-                        { opacity: 1, transform: 'scale(1)' }
-                    ], { duration, easing, fill: 'both' }));
-                }
-            });
-
-            animations.push(group.animate([
-                { height: `${firstGroupRect.height}px` },
-                { height: `${lastGroupHeight}px` }
-            ], { duration, easing, fill: 'both' }));
-
-            if (view === 'carousel') {
-                controls.style.opacity = '0';
-                controls.style.transform = 'translateY(6px)';
-                animations.push(controls.animate([
-                    { opacity: 0, transform: 'translateY(6px)' },
-                    { opacity: 1, transform: 'translateY(0)' }
-                ], { duration: 180, delay: duration, easing: 'ease-out', fill: 'both' }));
-            }
-
-            Promise.all(animations.map(animation => animation.finished.catch(() => null)))
-                .then(() => {
-                    if (morphCleanup !== cleanup) return;
-                    cleanup();
-                    morphCleanup = null;
-                    morphAnimations = [];
-                    morphGhosts = new Map();
-                    morphTargetView = null;
-                    isJumping = false;
-                    if (view === 'carousel') {
-                        updateControls();
-                        scheduleAutoplay();
-                    }
-                });
+        const play = (element, keyframes, options) => {
+            const animation = element.animate(keyframes, { fill: 'both', ...options });
+            animations.push(animation);
+            return animation;
         };
 
-        if (view === 'grid' && previousView === 'carousel') {
-            gridPreFadeAnimation = controls.animate([
+        // Lead card: one continuous shape change. Besides the box itself we
+        // interpolate the image frame's padding / size / crop, so the card
+        // never "snaps" between its grid look and its carousel look.
+        {
+            const ghost = ghosts.get(leadCard);
+            const from = firstCards.get(leadCard);
+            const to = lastCards.get(leadCard);
+            const pci = ghost.querySelector('.pci');
+            const pd = ghost.querySelector('.pd');
+            const img = ghost.querySelector('.pd img');
+            const opts = { duration: DURATION, easing: EASE_MOVE };
+
+            play(ghost, [
+                {
+                    transform: `translate(${from.rect.left}px, ${from.rect.top}px)`,
+                    width: `${from.rect.width}px`,
+                    height: `${from.rect.height}px`,
+                    opacity: from.opacity
+                },
+                {
+                    transform: `translate(${to.rect.left}px, ${to.rect.top}px)`,
+                    width: `${to.rect.width}px`,
+                    height: `${to.rect.height}px`,
+                    opacity: 1
+                }
+            ], opts);
+            if (pci) play(pci, [{ height: `${from.pciHeight}px` }, { height: `${to.pciHeight}px` }], opts);
+            if (pd) play(pd, [{ padding: from.padding }, { padding: to.padding }], opts);
+            if (img) {
+                play(img, [
+                    { width: `${from.imgWidth}px`, height: `${from.imgHeight}px`, objectPosition: from.imgPosition },
+                    { width: `${to.imgWidth}px`, height: `${to.imgHeight}px`, objectPosition: to.imgPosition }
+                ], opts);
+            }
+        }
+
+        // Neighbours: they never teleport. Going to the carousel they quietly
+        // recede under the expanding lead card; going back they ease in around
+        // it, slightly staggered, landing just before the lead card settles.
+        const neighbours = realCards.filter(card => card !== leadCard);
+        const stagger = Math.min(50, (DURATION * 0.15) / Math.max(1, neighbours.length - 1));
+        neighbours.forEach((card, order) => {
+            const ghost = ghosts.get(card);
+            const from = firstCards.get(card);
+            const to = lastCards.get(card);
+
+            if (view === 'carousel') {
+                const rect = from.rect;
+                const at = scale => `translate(${rect.left}px, ${rect.top}px) scale(${scale})`;
+                play(ghost, [
+                    { opacity: from.opacity, transform: at(1) },
+                    { opacity: 0, transform: at(SCALE_HIDDEN) }
+                ], { duration: DURATION * 0.45, easing: EASE_FADE });
+            } else {
+                const rect = to.rect;
+                const at = scale => `translate(${rect.left}px, ${rect.top}px) scale(${scale})`;
+                const startOpacity = startingOverrides.has(card) ? from.opacity : 0;
+                placeGhost(ghost, rect);
+                ghost.style.opacity = String(startOpacity);
+                ghost.style.transform = at(SCALE_HIDDEN);
+                play(ghost, [
+                    { opacity: startOpacity, transform: at(SCALE_HIDDEN) },
+                    { opacity: 1, transform: at(1) }
+                ], {
+                    duration: DURATION * 0.5,
+                    delay: DURATION * 0.35 + order * stagger,
+                    easing: EASE_FADE
+                });
+            }
+        });
+
+        play(group, [
+            { height: `${firstGroupRect.height}px` },
+            { height: `${lastGroupHeight}px` }
+        ], { duration: DURATION, easing: EASE_MOVE });
+
+        if (view === 'carousel') {
+            // Controls arrive while the card is still settling, not after.
+            controls.style.opacity = '0';
+            controls.style.transform = 'translateY(8px)';
+            play(controls, [
+                { opacity: 0, transform: 'translateY(8px)' },
+                { opacity: 1, transform: 'translateY(0)' }
+            ], { duration: 260, delay: DURATION * 0.55, easing: 'ease-out' });
+        } else if (controlsGhost) {
+            play(controlsGhost, [
                 { opacity: 1, transform: 'translateY(0)' },
                 { opacity: 0, transform: 'translateY(6px)' }
-            ], { duration: controlsDuration, easing: 'ease-in', fill: 'both' });
-            animations.push(gridPreFadeAnimation);
-            gridPreFadeAnimation.finished.then(() => {
-                if (morphCleanup === cleanup) animateMorph();
-            }).catch(() => {});
-        } else {
-            animateMorph();
+            ], { duration: 160, easing: 'ease-in' });
         }
+
+        Promise.all(animations.map(animation => animation.finished.catch(() => null)))
+            .then(() => {
+                if (morphCleanup !== cleanup) return;
+                cleanup();
+                morphCleanup = null;
+                morphAnimations = [];
+                morphGhosts = new Map();
+                morphTargetView = null;
+                isJumping = false;
+                if (view === 'carousel') {
+                    updateControls();
+                    scheduleAutoplay();
+                }
+            });
     }
 
     toggleButtons.forEach(button => {
@@ -916,6 +990,64 @@ if (contactForm) {
             // Re-enable button
             submitBtn.disabled = false;
             submitBtn.textContent = 'Send Message';
+        }
+    });
+}
+
+/* PREVIEW LIGHTBOX (cards without a case study) */
+const previewLightbox = document.getElementById('previewLightbox');
+if (previewLightbox) {
+    const previewImage = document.getElementById('previewImage');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewClose = previewLightbox.querySelector('.preview-close');
+    let lastFocused = null;
+
+    const openPreview = (src, title, alt) => {
+        lastFocused = document.activeElement;
+        previewImage.src = src;
+        previewImage.alt = alt || title || 'Project preview';
+        previewTitle.textContent = title || '';
+        previewTitle.hidden = !title;
+        previewLightbox.hidden = false;
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => previewLightbox.classList.add('on'));
+        previewClose.focus();
+    };
+
+    const closePreview = () => {
+        previewLightbox.classList.remove('on');
+        document.body.style.overflow = '';
+        const finish = () => {
+            previewLightbox.hidden = true;
+            previewImage.src = '';
+            previewLightbox.removeEventListener('transitionend', finish);
+        };
+        previewLightbox.addEventListener('transitionend', finish);
+        if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    };
+
+    // Delegated so it also works on carousel clones created at runtime
+    document.addEventListener('click', e => {
+        const card = e.target.closest('[data-preview]');
+        if (card) {
+            const img = card.querySelector('img');
+            openPreview(card.dataset.preview, card.dataset.previewTitle, img && img.alt);
+            return;
+        }
+        if (e.target === previewLightbox || e.target.closest('.preview-close')) closePreview();
+    });
+
+    document.addEventListener('keydown', e => {
+        if (previewLightbox.hidden) return;
+        if (e.key === 'Escape') {
+            closePreview();
+        } else if (e.key === 'Enter' || e.key === ' ') {
+            const card = e.target.closest && e.target.closest('[data-preview]');
+            if (card) {
+                e.preventDefault();
+                const img = card.querySelector('img');
+                openPreview(card.dataset.preview, card.dataset.previewTitle, img && img.alt);
+            }
         }
     });
 }

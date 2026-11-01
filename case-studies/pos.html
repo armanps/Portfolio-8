@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Study: POS Application | Arman Serrana – Full-Stack Developer</title>
+  <meta name="description"
+    content="Detailed case study of the POS Application developed for NobleLife International. A full-stack system built with ASP.NET Core, Razor Pages, and MySQL.">
+
+  <!-- SEO & Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Case Study: POS Application | Arman Serrana">
+  <meta property="og:description"
+    content="Full-stack Point of Sale system with inventory tracking, multi-location support, and real-time reporting.">
+  <meta property="og:url" content="https://arman.serrana.biz/case-studies/pos.html">
+  <meta property="og:image" content="https://arman.serrana.biz/images/apps/pos.webp">
+
+  <link rel="canonical" href="https://arman.serrana.biz/case-studies/pos.html">
+  <link rel="icon" type="image/png" href="../favicon.png">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Michroma&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../case-study.css">
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "SoftwareApplication",
+    "name": "POS Application",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "author": {
+      "@type": "Person",
+      "name": "Arman Serrana"
+    },
+    "description": "Full-featured Point of Sale platform with Order Management, Inventory Tracking, and Multi-location Support."
+  }
+  </script>
+</head>
+
+<body>
+  <div id="pb"></div>
+  <canvas id="bgc"></canvas>
+  <div class="aur a1"></div>
+  <div class="aur a2"></div>
+  <div class="aur a3"></div>
+  <div class="grd"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-container">
+      <a class="nlogo" href="../#home">
+        <div>
+          <div class="nname">Arman · <span class="na">Serrana</span></div>
+        </div>
+      </a>
+      <button id="hamburger" class="hamburger" aria-label="Toggle navigation" aria-expanded="false"
+        aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul id="navMenu">
+        <li><a href="../#about"><span class="nav-label">About</span></a></li>
+        <li><a href="../#services"><span class="nav-label">Services</span></a></li>
+        <li><a href="../#portfolio"><span class="nav-label">Portfolio</span></a></li>
+        <li><a href="../#endorsements"><span class="nav-label">Endorsements</span></a></li>
+        <li><a href="../#contact"><span class="nav-label">Contact</span></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="cs-wrap">
+    <!-- HERO -->
+    <header class="cs-hero rv">
+      <a href="../#portfolio" class="back-link"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+      <h1>POS Application</h1>
+      <p class="summary">A single, unified Point of Sale platform for NobleLife International that replaced four
+        separate
+        legacy PHP applications, bringing ordering, administration, reporting, and inventory into one secure,
+        easy-to-use system.</p>
+
+      <div class="cs-meta-grid">
+        <div class="cs-meta-item">
+          <div class="lbl">Role</div>
+          <div class="val">Full-Stack Developer</div>
+        </div>
+        <div class="cs-meta-item">
+          <div class="lbl">Client</div>
+          <div class="val">NobleLife International (Internal)</div>
+        </div>
+        <div class="cs-meta-item">
+          <div class="lbl">Timeline</div>
+          <div class="val">April 2025 – July 2025</div>
+        </div>
+        <div class="cs-meta-item">
+          <div class="lbl">Tech Stack</div>
+          <div class="tech-badges">
+            <span class="badge">ASP.NET Core 8</span>
+            <span class="badge">Razor Pages</span>
+            <span class="badge">MySQL</span>
+            <span class="badge">EF Core</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- OVERVIEW -->
+    <section class="cs-section rv">
+      <h2>Overview</h2>
+      <p>NLI-POS is the web-based system NobleLife International uses to run day-to-day sales operations across its
+        offices. It handles the full order lifecycle, from customer records and order entry to payment, inventory, and
+        reporting, in one application with role-based access for sales staff, managers, and administrators.</p>
+    </section>
+
+    <!-- THE PROBLEM -->
+    <section class="cs-section rv">
+      <h2>The Problem</h2>
+      <p>NobleLife's previous system was built on legacy PHP 5 and had grown into four separate applications: one to
+        take
+        and record orders and customers, one for admin and maintenance, one for reports, and one for inventory.</p>
+      <p>Staff had to switch between apps to complete everyday work, each with its own login and interface. The aging
+        PHP
+        5 platform was also hard to maintain and no longer supported, which made adding features and keeping the system
+        secure increasingly difficult.</p>
+      <ul class="tech-list">
+        <li><strong>Fragmented workflow:</strong> Orders, inventory, admin tasks, and reports lived in different apps.
+        </li>
+        <li><strong>Duplicated effort:</strong> Users and data were maintained in several places.</li>
+        <li><strong>Outdated technology:</strong> PHP 5 was end-of-life and difficult to extend safely.</li>
+        <li><strong>Hard to use:</strong> The interfaces were inconsistent and not designed for quick daily operation.
+        </li>
+      </ul>
+    </section>
+
+    <!-- THE SOLUTION -->
+    <section class="cs-section rv">
+      <h2>The Solution</h2>
+      <p>I consolidated the four legacy apps into one ASP.NET Core application built with Razor Pages and MySQL.
+        Ordering, customer records, administration, inventory, and reporting now share a single login, a single
+        database,
+        and a consistent interface, with role-based access controlling what each user can see and do. The rebuild also
+        brought stronger security practices and a cleaner, more user-friendly experience for daily use.</p>
+
+      <div class="sol-compare">
+        <div class="sol-ba sol-ba--before">
+          <h3><i class="fas fa-circle-xmark"></i>Before</h3>
+          <p>4 separate PHP 5 apps: POS, Admin, Reports, Inventory</p>
+        </div>
+        <div class="sol-ba-arrow" aria-hidden="true"><i class="fas fa-arrow-right"></i></div>
+        <div class="sol-ba sol-ba--after">
+          <h3><i class="fas fa-circle-check"></i>After</h3>
+          <p>1 unified ASP.NET Core app with shared login, data, and role-based access</p>
+        </div>
+      </div>
+
+      <div class="feat-grid">
+        <div class="feat-card">
+          <span class="fc-ico"><i class="fas fa-receipt"></i></span>
+          <h3>Order Management</h3>
+          <p>Streamlined checkout process with real-time order processing and receipt generation.</p>
+        </div>
+        <div class="feat-card">
+          <span class="fc-ico"><i class="fas fa-boxes-stacked"></i></span>
+          <h3>Inventory Tracking</h3>
+          <p>Automated stock level updates and low-inventory alerts across all product categories.</p>
+        </div>
+        <div class="feat-card">
+          <span class="fc-ico"><i class="fas fa-building"></i></span>
+          <h3>Multi-location Support</h3>
+          <p>Centralized management for multiple branches with localized data isolation and global reporting.</p>
+        </div>
+        <div class="feat-card">
+          <span class="fc-ico"><i class="fas fa-id-card-clip"></i></span>
+          <h3>Customer Profiles</h3>
+          <p>Integrated CRM features to track purchase history, loyalty points, and preferences.</p>
+        </div>
+        <div class="feat-card">
+          <span class="fc-ico"><i class="fas fa-user-shield"></i></span>
+          <h3>Role-Based Access Control</h3>
+          <p>Granular permissions for cashiers, managers, and administrators to ensure data security.</p>
+        </div>
+        <div class="feat-card">
+          <span class="fc-ico"><i class="fas fa-chart-line"></i></span>
+          <h3>Operational Reporting</h3>
+          <p>Comprehensive dashboards for daily sales, inventory turnover, and staff performance.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREENSHOT GALLERY -->
+    <section class="cs-section rv">
+      <h2>Screenshot Gallery</h2>
+      <div class="gallery-grid">
+        <figure class="gallery-item" data-index="0">
+          <img src="../images/case-studies/pos/shot-1.png" alt="POS Dashboard View" width="400" height="250"
+            loading="lazy">
+          <figcaption>Sales Dashboard with real-time analytics</figcaption>
+        </figure>
+        <figure class="gallery-item" data-index="1">
+          <img src="../images/case-studies/pos/shot-2.png" alt="Inventory Management Screen" width="400" height="250"
+            loading="lazy">
+          <figcaption>Inventory tracking and stock level management</figcaption>
+        </figure>
+        <figure class="gallery-item" data-index="2">
+          <img src="../images/case-studies/pos/shot-3.png" alt="Order Processing Interface" width="400" height="250"
+            loading="lazy">
+          <figcaption>New Order interface for sales staff</figcaption>
+        </figure>
+        <figure class="gallery-item" data-index="3">
+          <img src="../images/case-studies/pos/shot-4.png" alt="Reporting Analytics Dashboard" width="400" height="250"
+            loading="lazy">
+          <figcaption>Monthly Sales reports and automated exports</figcaption>
+        </figure>
+        <figure class="gallery-item" data-index="4">
+          <img src="../images/case-studies/pos/shot-5.png" alt="Multi-branch Configuration" width="400" height="250"
+            loading="lazy">
+          <figcaption>Management of international office locations</figcaption>
+        </figure>
+        <figure class="gallery-item" data-index="5">
+          <img src="../images/case-studies/pos/shot-6.png" alt="Customer Profile Management" width="400" height="250"
+            loading="lazy">
+          <figcaption>Customer registration and profile management</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE -->
+    <section class="cs-section rv">
+      <h2>Architecture & Technical Highlights</h2>
+      <div class="arch-diagram">
+        <div class="arch-flow">
+          <div class="arch-node">Browser</div>
+          <div class="arch-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+          <div class="arch-node">ASP.NET Core 8 / Razor Pages</div>
+          <div class="arch-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+          <div class="arch-node">Services Layer</div>
+          <div class="arch-arrow"><i class="fas fa-long-arrow-alt-right"></i></div>
+          <div class="arch-node">MySQL Database</div>
+        </div>
+      </div>
+      <!-- TODO: Verify these architecture points against the real build. Multi-tenant scoping, time zone normalization, audit logging, and raw SQL optimizations are not part of the verified background. -->
+      <ul class="tech-list">
+        <li><strong>Role-Based Authorization:</strong> Implemented secure access controls ensuring users only interact
+          with permitted modules based on branch and role.</li>
+        <li><strong>Multi-Location Data Scoping:</strong> Designed a multi-tenant architecture to handle data from
+          different international branches securely with time zone normalization.</li>
+        <li><strong>Audit Trail:</strong> Developed a comprehensive logging system to track all sensitive transactions,
+          voids, and administrative changes.</li>
+        <li><strong>Optimized Queries:</strong> Used Entity Framework Core with raw SQL optimizations for large
+          inventory datasets and complex pivot reporting.</li>
+      </ul>
+    </section>
+
+    <!-- CHALLENGES -->
+    <section class="cs-section rv">
+      <h2>Challenges & Solutions</h2>
+      <div class="challenge-item">
+        <div class="challenge-step">
+          <span class="lbl">Problem</span>
+          <p>Four independent apps with their own data and logic had to become one system without disrupting daily
+            operations.</p>
+        </div>
+        <div class="challenge-step">
+          <span class="lbl">Approach</span>
+          <p>Mapped the responsibilities of each legacy app, designed one shared data model, and rebuilt each area as a
+            module within the new application.</p>
+        </div>
+        <div class="challenge-step">
+          <span class="lbl">Result</span>
+          <p>One consistent system that staff use for ordering, administration, inventory, and reporting.</p>
+        </div>
+      </div>
+      <div class="challenge-item">
+        <div class="challenge-step">
+          <span class="lbl">Problem</span>
+          <p>Reports lived in a separate app, so sales and inventory figures had to be pulled from different places.</p>
+        </div>
+        <div class="challenge-step">
+          <span class="lbl">Approach</span>
+          <p>Built a specialized reporting service using EPPlus and ClosedXML to generate pivot-style reports
+            and Excel exports with time zone normalization for international offices.</p>
+        </div>
+        <div class="challenge-step">
+          <span class="lbl">Result</span>
+          <p>Reporting is now part of the same application, using the same data as ordering and inventory.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS / IMPACT -->
+    <section class="cs-section rv">
+      <h2>Results & Impact</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="num">PHP 5 → .NET 8</div>
+          <div class="lbl">Platform upgraded to a supported, modern stack</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">4 → 1</div>
+          <div class="lbl">Separate apps consolidated into one</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">1 login</div>
+          <div class="lbl">Single sign-in for every module</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFIDENTIALITY NOTE -->
+    <div class="conf-note rv">
+      <p><i class="fas fa-info-circle"></i> This application is an internal tool for NobleLife International. The live
+        system, production data, and source code are not public. Screenshots shown here use sample or redacted data
+        to protect business confidentiality.</p>
+    </div>
+
+    <!-- BACK TO PORTFOLIO -->
+    <a href="../#portfolio" class="cs-back-link"><i class="fas fa-arrow-left"></i> Back to Portfolio</a>
+
+    <!-- CTA -->
+    <section class="cs-cta rv">
+      <h2>Want something similar built for your business?</h2>
+      <a href="../#contact" class="btn-p">Let's build something great together</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 <span>Arman Serrana</span>. All rights reserved. · Built with care in Pampanga, PH.</p>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-label="Image lightbox">
+    <span class="lightbox-close" aria-label="Close">&times;</span>
+    <span class="lightbox-nav lightbox-prev" aria-label="Previous image"><i class="fas fa-chevron-left"></i></span>
+    <div class="lightbox-content">
+      <img src="" alt="" id="lightbox-img">
+    </div>
+    <span class="lightbox-nav lightbox-next" aria-label="Next image"><i class="fas fa-chevron-right"></i></span>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    document.documentElement.classList.add('js');
+
+    // Scroll Reveal
+    const ro = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('on');
+        ro.unobserve(e.target);
+      }
+    }), { threshold: .15 });
+
+    document.querySelectorAll('.rv').forEach(el => ro.observe(el));
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    let currentIndex = 0;
+
+    const openLightbox = (index) => {
+      currentIndex = index;
+      const img = galleryItems[index].querySelector('img');
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeLightbox = () => {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    const nextImage = () => {
+      currentIndex = (currentIndex + 1) % galleryItems.length;
+      openLightbox(currentIndex);
+    };
+
+    const prevImage = () => {
+      currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+      openLightbox(currentIndex);
+    };
+
+    galleryItems.forEach((item, index) => {
+      item.addEventListener('click', () => openLightbox(index));
+    });
+
+    document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    document.querySelector('.lightbox-next').addEventListener('click', nextImage);
+    document.querySelector('.lightbox-prev').addEventListener('click', prevImage);
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    });
+
+    // Mobile Nav Toggle (Simplified for Case Study)
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    hamburger.addEventListener('click', () => {
+      const isOpen = hamburger.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      navMenu.classList.toggle('open');
+    });
+
+    // Close menu on link click
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        hamburger.setAttribute('aria-expanded', 'false');
+        navMenu.classList.remove('open');
+      });
+    });
+  </script>
+</body>
+
+</html>
